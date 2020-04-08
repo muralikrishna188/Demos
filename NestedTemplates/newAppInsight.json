@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "appinsightname": {
+
+            "type": "String"
+        }        
+    },
+    "resources": [
+        
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2015-05-01",
+            "name": "[parameters('appinsightname')]",
+            "location": "[resourceGroup().location]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Bluefield",
+                "Request_Source": "rest"
+            }
+        }
+    ],
+    "outputs": {
+        "appplanInfo": {
+            "value": "[reference(concat('microsoft.insights/components/', parameters('appinsightname')),providers('microsoft.insights', 'components').apiVersions[0])]",
+            "type": "object"
+        }
+    }
+
+}
