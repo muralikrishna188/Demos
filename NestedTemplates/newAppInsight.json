@@ -22,12 +22,7 @@
                 "Request_Source": "rest"
             }
         }
-    ],
-    "outputs": {
-        "appplanInfo": {
-            "value": "[reference(concat('microsoft.insights/components/', parameters('appinsightname')),providers('microsoft.insights', 'components').apiVersions[0])]",
-            "type": "object"
-        }
-    }
+    ]
+    
 
 }
