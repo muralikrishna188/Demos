@@ -21,7 +21,7 @@
     },
     "variables": {
         "templatelinkstoarge": "[concat('https://raw.githubusercontent.com/muralikrishna188/Demos/master/NestedTemplates/',parameters('newOrExisting'),'StorageAccount.json')]",
-        "templatelinkappplan": "[concat('https://raw.githubusercontent.com/muralikrishna188/Demos/master/NestedTemplates/',parameters('newOrExisting'),'appserviceplan.json')]"
+        "templatelinkappplan": "[concat('https://raw.githubusercontent.com/muralikrishna188/Demos/master/NestedTemplates/',parameters('newOrExisting'),'AppservicePlan.json')]"
     },
     "resources": [
         {
