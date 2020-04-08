@@ -1,0 +1,97 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "kyevaultname": {
+            "type": "String"
+        },
+        "tenant_id": {
+            "type": "string",
+            "defaultValue": "[subscription().tenantId]",
+            "metadata": {
+                "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet"
+            }
+        },
+        "object_Id": {
+            "type": "string",
+            "defaultValue": "be222820-1f07-4b27-be4b-e13967640f9e",
+            "metadata": {
+                "descripton": "Specifies the object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies. Get it by using Get-AzADUser or Get-AzADServicePrincipal cmdlets"
+            }
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "Standard",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ],
+            "metadata": {
+                "description": "Specifies whether the key vault is a standard vault or a premium vault."
+            }
+        }
+        
+
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2016-10-01",
+            "name": "[parameters('kyevaultname')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "[parameters('skuName')]"
+                },
+                "tenantId": "[parameters('tenant_id')]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[parameters('tenant_id')]",
+                        "objectId": "[parameters('object_Id')]",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List"
+
+                            ]
+                        }
+                    }
+                ],
+
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": true,
+                "enableSoftDelete": true
+            }
+        }
+    ],
+    "outputs": {
+        "appplanInfo": {
+            "value": "[reference(concat('Microsoft.KeyVault/vaults/', parameters('kyevaultname')),providers('Microsoft.KeyVault', 'vaults').apiVersions[0])]",
+            "type": "object"
+        }
+    }
+
+}
