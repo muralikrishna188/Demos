@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "type": "String",
+            "defaultValue": "[uniqueString( resourceGroup().id, deployment().name )]"
+        },
+        "appserviceplanname": {
+            "type": "String",
+            "defaultValue": "[uniqueString( resourceGroup().id, deployment().name )]"
+        },
+
+        "newOrExisting": {
+            "type": "String",
+            "allowedValues": [
+                "new",
+                "existing"
+            ]
+        }
+    },
+    "variables": {
+        "templatelinkstoarge": "[concat('https://raw.githubusercontent.com/muralikrishna188/Demos/master/NestedTemplates/',parameters('newOrExisting'),'StorageAccount.json')]",
+        "templatelinkappplan": "[concat('https://raw.githubusercontent.com/muralikrishna188/Demos/master/NestedTemplates/',parameters('newOrExisting'),'appserviceplan.json')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-01-01",
+            "name": "nestedstorage",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[variables('templatelinkstoarge')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "StorageAccountName": {
+                        "value": "[parameters('storageAccountName')]"
+                    }
+                }
+            }
+
+        },
+        {
+            "apiVersion": "2015-01-01",
+            "name": "nestedappplan",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[variables('templatelinkappplan')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "StorageAccountName": {
+                        "value": "[parameters('appserviceplanname')]"
+                    }
+                }
+            }
+
+        }
+    ],
+    "outputs": {
+        "exampleOutput1": {
+            "value": "[reference('nestedstorage')]",
+            "type": "object"
+        },
+        "exampleOutput2": {
+            "value": "[reference('nestedappplan')]",
+            "type": "object"
+        }
+    }
+}
