@@ -4,12 +4,7 @@
   "parameters": {
     "newOrExisting": {
       "value": "new"
-    },
-    "storageAccountName": {
-      "value": "nestedtesttest1"
-    },
-    "appserviceplanname": {
-      "value": "nestedappplantest"
-    }
+    }    
+    
   }
 }
