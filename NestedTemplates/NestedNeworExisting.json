@@ -1,0 +1,119 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appinsightname": {
+            "type": "String"
+        },
+        "webappname": {
+            "type": "string"
+        },
+        "appserviceplanname": {
+            "type": "String"
+        },
+        "kyevaultname": {
+            "type": "String"
+        }        
+    },
+    "variables": {
+        "templatelinkinsigts": "https://nestedtesttest1.blob.core.windows.net/nestedblobdev/newAppInsight.json?sp=r&st=2020-04-08T14:28:08Z&se=2020-04-10T22:28:08Z&spr=https&sv=2019-02-02&sr=b&sig=SVCqKJZwsiZ8dfR8gY3a%2FQFB68Q7IZcqTCxoMPCx%2Baw%3D",
+        "templatelinkappplan": "https://nestedtesttest1.blob.core.windows.net/nestedblobdev/newAppservicePlan.json?sp=r&st=2020-04-08T14:29:31Z&se=2020-04-08T22:29:31Z&spr=https&sv=2019-02-02&sr=b&sig=3hbRoHPKMjEtQicoIKzRljckJURBxXT8V54F0cI1vnM%3D",
+        "templatelinkkeyvault": "https://nestedtesttest1.blob.core.windows.net/nestedblobdev/newKeyVault.json?sp=r&st=2020-04-08T14:30:17Z&se=2020-04-08T22:30:17Z&spr=https&sv=2019-02-02&sr=b&sig=yRnMKynosQ15hYxCLMDTIP4W1Kwejm2BoeKtLE9vi2Y%3D",
+        "templatelinkwebapp": "https://nestedtesttest1.blob.core.windows.net/nestedblobdev/newWebApp.json?sp=r&st=2020-04-09T08:21:59Z&se=2020-04-09T16:21:59Z&spr=https&sv=2019-02-02&sr=b&sig=%2Btlks2%2FMeYegAihhR73kViX8DW6rP5gLhUqkXynZweY%3D"
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-01-01",
+            "name": "nestedwebapp",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[variables('templatelinkwebapp')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "dependsOn": [
+                "nestedinsights"                
+            ],
+                "parameters": {
+                    "webappname": {
+                        "value": "[parameters('webappname')]"
+                    },
+                    "appinsightname": {
+                        "value": "[parameters('appinsightname')]"
+                    }
+                }
+            }
+
+        },
+        {
+            "apiVersion": "2015-01-01",
+            "name": "nestedinsights",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[variables('templatelinkinsigts')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appinsightname": {
+                        "value": "[parameters('appinsightname')]"
+                    }
+                }
+            }
+
+        },
+        {
+            "apiVersion": "2015-01-01",
+            "name": "nestedappplan",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[variables('templatelinkappplan')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appserviceplanname": {
+                        "value": "[parameters('appserviceplanname')]"
+                    }
+                }
+            }
+
+        },
+        {
+            "apiVersion": "2015-01-01",
+            "name": "nestedkeyvault",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[variables('templatelinkkeyvault')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "kyevaultname": {
+                        "value": "[parameters('kyevaultname')]"
+                    }
+                }
+            }
+
+        }
+
+    ],
+    "outputs": {
+        "exampleOutput1": {
+            "value": "[reference('nestedinsights')]",
+            "type": "object"
+        },
+        "exampleOutput2": {
+            "value": "[reference('nestedappplan')]",
+            "type": "object"
+        },
+        "exampleOutput3": {
+            "value": "[reference('nestedkeyvault')]",
+            "type": "object"
+        }
+    }
+}

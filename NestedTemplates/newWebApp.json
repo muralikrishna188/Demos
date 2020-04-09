@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "webappname": {
+            "type": "string"
+        },
+        "appserviceplanname": {
+            "type": "String"
+        },
+        "appinsightname": {
+            "type": "String"
+        }
+    },
+
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('webappname')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('appserviceplanname'))]": "Resource",
+                "displayName": "Website"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms/', parameters('appserviceplanname'))]"
+            ],
+            "properties": {
+                "name": "[parameters('webappname')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appserviceplanname'))]",
+                "httpsOnly": true,
+                "siteConfig": {
+                    "alwaysOn": true,
+                    "appSettings": [
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(resourceId('microsoft.insights/components/', parameters('appinsightname')), '2015-05-01').InstrumentationKey]"
+
+                        }
+                    ]
+
+                }
+            }
+        }
+    ]
+
+
+}
