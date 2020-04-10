@@ -6,7 +6,7 @@
             "value": "dev44AppPlan"
         },
         "webappname": {
-            "value": "commonservicesdev44"
+            "value": "commonservicesdev77"
         },
         "applicationInsightsName": {
             "value": "dev44ai"
@@ -18,7 +18,7 @@
             "value": "S1"
         },
         "keyVaultName": {
-            "value": "dev44kvlt"
+            "value": "dev4478kvlt"
         },
         "newOrExisting": {
             "value": "existing"
