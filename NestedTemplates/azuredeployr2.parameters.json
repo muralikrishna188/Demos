@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "hostingPlanName": {
-            "value": "dev44AppPlan"
+            "value": "dev44AppPlan1"
         },
         "webappname": {
-            "value": "commonservicesdev77"
+            "value": "commonservicesdev7237"
         },
         "applicationInsightsName": {
-            "value": "dev44ai"
+            "value": "dev44aai"
         },
         "autoscale_rules_enabled": {
             "value": "false"
@@ -18,10 +18,10 @@
             "value": "S1"
         },
         "keyVaultName": {
-            "value": "dev4478kvlt"
+            "value": "dev4478kvlt2"
         },
         "newOrExisting": {
-            "value": "existing"
+            "value": "new"
         }
     }
 }
