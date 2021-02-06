@@ -4,13 +4,13 @@
     "parameters": {
 
         "webappname": {
-            "type": "string"
+            "type": "webapp34"
         },
         "appserviceplanname": {
-            "type": "String"
+            "type": "applan2"
         },
         "appinsightname": {
-            "type": "String"
+            "type": "appinsight345"
         }
     },
 
